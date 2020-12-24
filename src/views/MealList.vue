@@ -10,6 +10,8 @@
         <th>Name</th>
         <th>Price</th>
         <th>Available</th>
+        <th>Update</th>
+        <th>Delete</th>
       </tr>
       </thead>
       <tbody>
@@ -18,11 +20,17 @@
         <td>{{ meal.mealCost }}</td>
         <td>{{ meal.mealAvailable }}</td>
         <td>
+          <button class="btn btn-primary" v-on:click="updateMeal(meal.id)">Edit</button>
+        </td>
+        <td>
           <button class="btn btn-danger" v-on:click="deleteMeal(meal.id)">Delete</button>
         </td>
       </tr>
       </tbody>
     </table>
+    <div class="row">
+      <button class="btn btn-success" v-on:click="addMeal()">Add</button>
+    </div>
   </div>
 </template>
 
@@ -48,6 +56,12 @@ export default {
         this.message = 'delete ' + id + ' successful';
         this.refreshMeals();
       })
+    },
+    updateMeal(id) {
+      this.$router.push('/meals/' + id)
+    },
+    addMeal(){
+      this.$router.push(`/meals/0`)
     }
   },
   created() {

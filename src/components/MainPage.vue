@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import MealList from "@/components/MealList";
+import MealList from "@/views/MealList";
 export default {
 name: "MainPage",
   components: {MealList}
