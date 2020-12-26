@@ -4,18 +4,18 @@
     <form @submit="handleSubmit">
       <div class="form-row">
         <label for="id">ID</label>
-        <input id="id" type="text" class="form-control" v-model="id" disabled>
+        <input id="id" v-model="id" class="form-control" disabled type="text">
       </div>
       <div class="form-row">
         <label for="name">Name</label>
-        <input id="name" type="text" class="form-control" v-model="mealName">
+        <input id="name" v-model="mealName" class="form-control" type="text">
       </div>
       <div class="form-row">
         <label for="cost">Price</label>
-        <input id="cost" type="number" class="form-control" v-model="mealCost">
+        <input id="cost" v-model="mealCost" class="form-control" type="number">
       </div>
       <div class="form-check">
-        <input id="available" type="checkbox" class="form-check-input" v-model="mealAvailable">
+        <input id="available" v-model="mealAvailable" class="form-check-input" type="checkbox">
         <label for="available">Available</label>
       </div>
       <button class="btn btn-success" type="submit">Save</button>
@@ -33,7 +33,8 @@ export default {
       mealName: "",
       mealCost: 0,
       mealAvailable: false,
-      errors: []
+      errors: [],
+      mealsUrl: "http://localhost:8080/meal/"
     };
   },
   computed: {
@@ -43,7 +44,7 @@ export default {
   },
   methods: {
     refreshDetails() {
-      DataService.get(this.id).then(res => {
+      DataService.get(this.mealsUrl, this.id).then(res => {
         this.mealName = res.data.mealName;
         this.mealCost = res.data.mealCost;
         this.mealAvailable = res.data.mealAvailable;
@@ -57,11 +58,11 @@ export default {
         mealAvailable: this.mealAvailable
       };
       if (this.id !== 0) {
-        DataService.update(this.id, item).then(() => {
+        DataService.update(this.mealsUrl, this.id, item).then(() => {
           this.$router.push("/meals")
         })
       } else {
-        DataService.create(item).then(() => {
+        DataService.create(this.mealsUrl, item).then(() => {
           this.$router.push("/meals")
         })
       }
