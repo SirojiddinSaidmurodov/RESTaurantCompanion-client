@@ -1,9 +1,18 @@
 <template>
   <div class="container">
     <h2>Menu</h2>
-    <div v-if="message" class="alert alert-success">
+
+    <div v-if="message" class="alert alert-danger alert-dismissible fade show" role="alert">
+      <h4>Warning!</h4>
       {{ message }}
+      <button class="btn btn-outline-danger" data-dismiss="alert" type="button" v-on:click="undo()">Cancel
+      </button>
+
+      <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+        <span aria-hidden="true">&times;</span>
+      </button>
     </div>
+
     <table class="table">
       <thead>
       <tr>
@@ -42,7 +51,8 @@ export default {
   data() {
     return {
       meals: [],
-      message: null
+      message: null,
+      last: null
     }
   },
   methods: {
@@ -53,15 +63,25 @@ export default {
     },
     deleteMeal(id) {
       MealDataService.delete(id).then(response => {
-        this.message = 'delete ' + id + ' successful';
+        this.message = 'Deleted ' + response.data.mealName + ' successful';
+        this.last = {
+          id: response.data.id,
+          mealAvailable: response.data.mealAvailable,
+          mealCost: response.data.mealCost,
+          mealName: response.data.mealName
+        };
         this.refreshMeals();
       })
     },
     updateMeal(id) {
       this.$router.push('/meals/' + id)
     },
-    addMeal(){
+    addMeal() {
       this.$router.push(`/meals/0`)
+    },
+    async undo() {
+      await MealDataService.create(this.last);
+      this.refreshMeals();
     }
   },
   created() {
@@ -69,7 +89,6 @@ export default {
   }
 }
 </script>
-
 <style scoped>
 
 </style>

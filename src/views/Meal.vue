@@ -14,9 +14,9 @@
         <label for="cost">Price</label>
         <input id="cost" type="number" class="form-control" v-model="mealCost">
       </div>
-      <div class="form-row">
+      <div class="form-check">
+        <input id="available" type="checkbox" class="form-check-input" v-model="mealAvailable">
         <label for="available">Available</label>
-        <input id="available" type="checkbox" class="form-control" v-model="mealAvailable">
       </div>
       <button class="btn btn-success" type="submit">Save</button>
     </form>
