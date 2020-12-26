@@ -2,13 +2,13 @@
   <div class="container">
     <h2>Menu</h2>
 
-    <div v-if="message" class="alert alert-danger alert-dismissible fade show" role="alert">
+    <div v-if="message" id="deleteMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
       <h4>Warning!</h4>
       {{ message }}
       <button class="btn btn-outline-danger" data-dismiss="alert" type="button" v-on:click="undo()">Cancel
       </button>
 
-      <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+      <button aria-label="Close" class="close" data-dismiss="alert" type="button" v-on:click="this.message = null">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
@@ -83,6 +83,7 @@ export default {
     async undo() {
       await DataService.create(this.serverUrl, this.last);
       this.refreshMeals();
+      this.message = null;
     }
   },
   created() {
