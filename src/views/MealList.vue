@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import MealDataService from "@/services/MealDataService";
+import DataService from "@/services/DataService";
 
 export default {
   name: "MealList",
@@ -52,17 +52,18 @@ export default {
     return {
       meals: [],
       message: null,
-      last: null
+      last: null,
+      serverUrl: "http://localhost:8080/meal/"
     }
   },
   methods: {
     refreshMeals() {
-      MealDataService.getAll().then(response => {
+      DataService.getAll(this.serverUrl).then(response => {
         this.meals = response.data;
       })
     },
     deleteMeal(id) {
-      MealDataService.delete(id).then(response => {
+      DataService.delete(this.serverUrl, id).then(response => {
         this.message = 'Deleted ' + response.data.mealName + ' successful';
         this.last = {
           id: response.data.id,
@@ -80,7 +81,7 @@ export default {
       this.$router.push(`/meals/0`)
     },
     async undo() {
-      await MealDataService.create(this.last);
+      await DataService.create(this.serverUrl, this.last);
       this.refreshMeals();
     }
   },

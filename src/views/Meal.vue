@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import MealDataService from "@/services/MealDataService";
+import DataService from "@/services/DataService";
 
 export default {
   name: "mealDetails",
@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     refreshDetails() {
-      MealDataService.get(this.id).then(res => {
+      DataService.get(this.id).then(res => {
         this.mealName = res.data.mealName;
         this.mealCost = res.data.mealCost;
         this.mealAvailable = res.data.mealAvailable;
@@ -57,11 +57,11 @@ export default {
         mealAvailable: this.mealAvailable
       };
       if (this.id !== 0) {
-        MealDataService.update(this.id, item).then(() => {
+        DataService.update(this.id, item).then(() => {
           this.$router.push("/meals")
         })
       } else {
-        MealDataService.create(item).then(() => {
+        DataService.create(item).then(() => {
           this.$router.push("/meals")
         })
       }

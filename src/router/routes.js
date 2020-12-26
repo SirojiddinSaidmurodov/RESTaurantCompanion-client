@@ -20,6 +20,26 @@ const router = new Router({
             path: "/meals/:id",
             name: "Meal Details",
             component: () => import("../views/Meal")
+        },
+        {
+            path: "/users",
+            name: "Users",
+            component: () => import("../views/UserList")
+        },
+        {
+            path: "/users/:id",
+            name: "User Details",
+            component: () => import("../views/User")
+        },
+        {
+            path: "/orders",
+            name: "Orders",
+            component: () => import("../views/OrderList")
+        },
+        {
+            path: "/orders/:id",
+            name: "Order Details",
+            component: () => import("../views/Order")
         }
     ]
 });
