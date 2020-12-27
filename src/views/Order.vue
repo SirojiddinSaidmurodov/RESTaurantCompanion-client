@@ -29,14 +29,14 @@
       </div>
       <div class="form-row"><label>Waiter
         <select v-model="waiterID" class="custom-select">
-          <option selected value="0">Undefined</option>
           <option v-for="waiter in waiters" :value="waiter.id">{{ waiter.name }}</option>
         </select>
       </label></div>
       <p v-if="this.id!==0" class="h5">Items</p>
-      <button class="btn btn-primary" v-on:click="$router.push('/orders/' + id + '/' + 0)">Add</button>
+      <button v-if="this.id!==0" class="btn btn-primary" v-on:click="$router.push('/orders/' + id + '/' + 0)">Add
+      </button>
       <ul v-if="this.id!==0" class="list-group">
-        <li v-for="item in orderItems" class="list-group-item">item
+        <li v-for="item in orderItems" class="list-group-item">{{ item.meal.mealName }}
           <div class="btn btn-danger mr-3" v-on:click="deleteItem(item.id)">Delete</div>
           <div class="btn btn-primary mr-3" v-on:click="$router.push('/orders/' + id + '/' + item.id)">Edit</div>
         </li>
@@ -57,7 +57,8 @@ export default {
       tableID: 0,
       ready: false,
       waiters: null,
-      orderItems: null,
+      orderItems: [],
+      message: null,
       serverUrl: "http://localhost:8080/order/",
       itemUrl: "http://localhost:8080/orderItem/",
     };
@@ -74,10 +75,11 @@ export default {
         this.tableID = res.data.tableID;
         this.ready = res.data.ready;
       });
-      DataService.getAll(this.itemUrl + "?orderID=" + this.id).then(response => {
+      DataService.getAll(this.itemUrl + "?expand&orderID=" + this.id).then(response => {
         this.orderItems = response.data;
       })
-    },
+    }
+    ,
     handleSubmit: function (e) {
       e.preventDefault();
       const item = {
@@ -110,7 +112,7 @@ export default {
     async undo() {
       await DataService.create(this.itemUrl, this.last);
       this.message = null;
-      this.refresh();
+      this.refreshDetails();
     },
     deleteMessage() {
       this.message = null;

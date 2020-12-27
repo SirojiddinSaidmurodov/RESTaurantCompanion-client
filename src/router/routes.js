@@ -42,7 +42,7 @@ const router = new Router({
             component: () => import("../views/Order")
         },
         {
-            path: "/orders/:id/:itemID",
+            path: "/orders/:orderID/:id",
             name: "Order Details",
             component: () => import("../views/OrderItem")
         }
