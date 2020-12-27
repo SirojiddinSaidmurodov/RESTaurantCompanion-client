@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container-sm">
     <h2 class="display-3">Menu</h2>
 
     <div v-if="message" id="deleteMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -13,25 +13,33 @@
       </button>
     </div>
 
-    <table class="table">
-      <thead>
+    <table class="table table-hover table-borderless" style="max-width: 600px">
+      <thead class="thead-light">
       <tr>
-        <th>Name</th>
-        <th>Price</th>
-        <th>Available</th>
-        <th>Update</th>
-        <th>Delete</th>
+        <th scope="col">Name</th>
+        <th scope="col">Price</th>
+        <th scope="col">Update</th>
+        <th scope="col">Delete</th>
       </tr>
       </thead>
       <tbody>
-      <tr v-for="meal in meals" v-bind:key="meal.id">
+      <tr v-for="meal in meals" v-if="meal.mealAvailable" v-bind:key="meal.id">
         <td>{{ meal.mealName }}</td>
         <td>{{ meal.mealCost }}</td>
-        <td>{{ meal.mealAvailable }}</td>
         <td>
           <button class="btn btn-primary" v-on:click="update(meal.id)">Edit</button>
         </td>
-        <td>
+        <td style="width: 50px">
+          <button class="btn btn-danger" v-on:click="deleteItem(meal.id)">Delete</button>
+        </td>
+      </tr>
+      <tr v-for="meal in meals" v-if="!meal.mealAvailable" v-bind:key="meal.id" class="table-danger">
+        <td>{{ meal.mealName }}</td>
+        <td>{{ meal.mealCost }}</td>
+        <td style="width: 50px">
+          <button class="btn btn-primary" v-on:click="update(meal.id)">Edit</button>
+        </td>
+        <td style="width: 50px">
           <button class="btn btn-danger" v-on:click="deleteItem(meal.id)">Delete</button>
         </td>
       </tr>
