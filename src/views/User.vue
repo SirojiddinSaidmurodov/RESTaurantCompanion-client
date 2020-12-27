@@ -8,19 +8,18 @@
       </div>
       <div class="form-row">
         <label for="name">Name</label>
-        <input id="name" v-model="name" class="form-control" type="text">
+        <input id="name" v-model="name" class="form-control" required type="text">
       </div>
       <div class="form-row">
         <label for="login">Login</label>
-        <input id="login" v-model="login" class="form-control" type="text">
+        <input id="login" v-model="login" class="form-control" required type="text">
       </div>
       <div class="form-row">
         <label for="password">Password</label>
-        <input id="password" v-model="password" class="form-control" type="text">
+        <input id="password" v-model="password" class="form-control" required type="text">
       </div>
       <div class="form-row"><label>User type
-        <select v-model="userType" class="custom-select">
-          <option selected value="0">Undefined</option>
+        <select v-model="userType" class="custom-select" required>
           <option value="1">Admin</option>
           <option value="2">Cook</option>
           <option value="3">Waiter</option>

@@ -13,14 +13,14 @@
       </button>
     </div>
 
-    <div class="card-deck">
+    <div class="card-columns">
       <div v-for="order in orders" v-if="!order.ready" class="card bg-light mb-3">
         <div class="card-header">{{ order.id % 100 }}</div>
         <div class="card-body">
           <h4 class="card-title">
             {{ order.waiterID }}
           </h4>
-          <h6 class="card-subtitle">Table {{ order.table }}</h6>
+          <h6 class="card-subtitle">Table {{ order.tableID }}</h6>
           <div class="card-text">
             <ul>
               <li v-for="meal in order.items">{{ meal }}</li>
@@ -37,7 +37,7 @@
           <h4 class="card-title">
             {{ order.waiterID }}
           </h4>
-          <h6 class="card-subtitle">Table {{ order.table }}</h6>
+          <h6 class="card-subtitle">Table {{ order.tableID }}</h6>
           <div class="card-text">
             <ul>
               <li v-for="meal in order.items">{{ meal }}</li>
@@ -48,6 +48,7 @@
           </div>
         </div>
       </div>
+
     </div>
   </div>
 </template>

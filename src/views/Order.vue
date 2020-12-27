@@ -14,34 +14,34 @@
     </div>
 
     <form @submit="handleSubmit">
-      <div class="form-row">
-        <label for="id">ID</label>
-        <input id="id" v-model="id" class="form-control" disabled type="text">
-      </div>
 
       <div class="form-row">
         <label for="login">Table</label>
-        <input id="login" v-model="tableID" class="form-control" type="number">
+        <input id="login" v-model="tableID" class="form-control" required type="number">
       </div>
       <div class="form-check p-3">
         <input id="available" v-model="ready" class="form-check-input" type="checkbox">
         <label for="available">Ready</label>
       </div>
       <div class="form-row"><label>Waiter
-        <select v-model="waiterID" class="custom-select">
+        <select v-model="waiterID" class="custom-select" required>
           <option v-for="waiter in waiters" :value="waiter.id">{{ waiter.name }}</option>
         </select>
       </label></div>
       <p v-if="this.id!==0" class="h5">Items</p>
-      <button v-if="this.id!==0" class="btn btn-primary" v-on:click="$router.push('/orders/' + id + '/' + 0)">Add
-      </button>
-      <ul v-if="this.id!==0" class="list-group">
+      <div class="btn-group mb-3">
+        <button v-if="this.id!==0" class="btn btn-primary" v-on:click="$router.push('/orderItem/' + id + '/' + 0)">Add
+        </button>
+        <button class="btn btn-success" type="submit">Save</button>
+      </div>
+
+      <ul v-if="this.id!==0" class="list-group mb-3">
         <li v-for="item in orderItems" class="list-group-item">{{ item.meal.mealName }}
           <div class="btn btn-danger mr-3" v-on:click="deleteItem(item.id)">Delete</div>
-          <div class="btn btn-primary mr-3" v-on:click="$router.push('/orders/' + id + '/' + item.id)">Edit</div>
+          <div class="btn btn-primary mr-3" v-on:click="$router.push('/orderItem/' + id + '/' + item.id)">Edit</div>
         </li>
       </ul>
-      <button class="btn btn-success mr-3" type="submit">Save</button>
+
     </form>
   </div>
 </template>

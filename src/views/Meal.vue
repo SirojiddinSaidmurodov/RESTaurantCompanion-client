@@ -3,16 +3,12 @@
     <h1 class="display-3">Meal details</h1>
     <form @submit="handleSubmit">
       <div class="form-row">
-        <label for="id">ID</label>
-        <input id="id" v-model="id" class="form-control" disabled type="text">
-      </div>
-      <div class="form-row">
         <label for="name">Name</label>
-        <input id="name" v-model="mealName" class="form-control" type="text">
+        <input id="name" v-model="mealName" class="form-control" required type="text">
       </div>
       <div class="form-row">
         <label for="cost">Price</label>
-        <input id="cost" v-model="mealCost" class="form-control" type="number">
+        <input id="cost" v-model="mealCost" class="form-control" required type="number">
       </div>
       <div class="form-check">
         <input id="available" v-model="mealAvailable" class="form-check-input" type="checkbox">
@@ -31,7 +27,7 @@ export default {
   data() {
     return {
       mealName: "",
-      mealCost: 0,
+      mealCost: null,
       mealAvailable: false,
       errors: [],
       mealsUrl: "http://localhost:8080/meal/"

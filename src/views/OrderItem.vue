@@ -2,18 +2,14 @@
   <div class="container">
     <h1 class="display-3">Order item</h1>
     <form @submit="handleSubmit">
-      <div class="form-row">
-        <label for="id">ID</label>
-        <input id="id" v-model="id" class="form-control" disabled type="text">
-      </div>
       <div class="form-row"><label>Meal
-        <select v-model="mealID" class="custom-select">
+        <select v-model="mealID" class="custom-select" required>
           <option v-for="meal in meals" :value="meal.id">{{ meal.mealName }}</option>
         </select>
       </label></div>
       <div class="form-row">
         <label>Quantity
-          <input v-model="quantity" type="number">
+          <input v-model="quantity" required type="number">
         </label>
       </div>
       <button class="btn btn-success mr-3" type="submit">Save</button>
@@ -30,7 +26,7 @@ export default {
     return {
       meals: null,
       mealID: 0,
-      quantity: 0,
+      quantity: 1,
       itemUrl: "http://localhost:8080/orderItem/"
     }
   },
