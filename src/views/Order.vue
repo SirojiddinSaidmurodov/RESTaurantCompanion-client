@@ -1,6 +1,18 @@
 <template>
   <div class="container">
     <h1 class="display-3">Order details</h1>
+
+    <div v-if="message" id="deleteMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+      <h4>Warning!</h4>
+      {{ message }}
+      <button class="btn btn-outline-danger" data-dismiss="alert" type="button" v-on:click="undo()">Cancel
+      </button>
+
+      <button aria-label="Close" class="close" data-dismiss="alert" type="button" v-on:click="deleteMessage()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
     <form @submit="handleSubmit">
       <div class="form-row">
         <label for="id">ID</label>
@@ -11,7 +23,7 @@
         <label for="login">Table</label>
         <input id="login" v-model="tableID" class="form-control" type="number">
       </div>
-      <div class="form-check">
+      <div class="form-check p-3">
         <input id="available" v-model="ready" class="form-check-input" type="checkbox">
         <label for="available">Ready</label>
       </div>
@@ -21,7 +33,15 @@
           <option v-for="waiter in waiters" :value="waiter.id">{{ waiter.name }}</option>
         </select>
       </label></div>
-      <button class="btn btn-success" type="submit">Save</button>
+      <p v-if="this.id!==0" class="h5">Items</p>
+      <button class="btn btn-primary" v-on:click="$router.push('/orders/' + id + '/' + 0)">Add</button>
+      <ul v-if="this.id!==0" class="list-group">
+        <li v-for="item in orderItems" class="list-group-item">item
+          <div class="btn btn-danger mr-3" v-on:click="deleteItem(item.id)">Delete</div>
+          <div class="btn btn-primary mr-3" v-on:click="$router.push('/orders/' + id + '/' + item.id)">Edit</div>
+        </li>
+      </ul>
+      <button class="btn btn-success mr-3" type="submit">Save</button>
     </form>
   </div>
 </template>
@@ -37,7 +57,9 @@ export default {
       tableID: 0,
       ready: false,
       waiters: null,
-      serverUrl: "http://localhost:8080/order/"
+      orderItems: null,
+      serverUrl: "http://localhost:8080/order/",
+      itemUrl: "http://localhost:8080/orderItem/",
     };
   },
   computed: {
@@ -52,6 +74,9 @@ export default {
         this.tableID = res.data.tableID;
         this.ready = res.data.ready;
       });
+      DataService.getAll(this.itemUrl + "?orderID=" + this.id).then(response => {
+        this.orderItems = response.data;
+      })
     },
     handleSubmit: function (e) {
       e.preventDefault();
@@ -69,6 +94,26 @@ export default {
           this.$router.push("/orders")
         })
       }
+    },
+    deleteItem(id) {
+      DataService.delete(this.itemUrl, id).then(response => {
+        this.message = 'Deleted ' + response.data.mealName + ' successful';
+        this.last = {
+          id: response.data.id,
+          mealID: response.data.mealID,
+          orderID: response.data.orderID,
+          quantity: response.data.quantity,
+        };
+        this.refreshDetails();
+      })
+    },
+    async undo() {
+      await DataService.create(this.itemUrl, this.last);
+      this.message = null;
+      this.refresh();
+    },
+    deleteMessage() {
+      this.message = null;
     }
   },
   created() {
