@@ -23,7 +23,9 @@
           <h6 class="card-subtitle">Table {{ order.tableID }}</h6>
           <div class="card-text">
             <ul>
-              <li v-for="meal in order.items">{{ meal }}</li>
+              <li v-for="item in order.items">{{ item.meal.mealName }}
+                <div class="badge badge-warning">{{ item.quantity }}</div>
+              </li>
             </ul>
           </div>
           <div class="btn btn-outline-dark mr-2" v-on:click="update(order.id)">Edit</div>
@@ -40,7 +42,9 @@
           <h6 class="card-subtitle">Table {{ order.tableID }}</h6>
           <div class="card-text">
             <ul>
-              <li v-for="meal in order.items">{{ meal }}</li>
+              <li v-for="item in order.items">{{ item.meal.mealName }}
+                <div class="badge badge-warning">{{ item.quantity }}</div>
+              </li>
             </ul>
           </div>
           <div class="btn btn-outline-light mr-2" v-on:click="update(order.id)">Edit</div>
@@ -68,7 +72,7 @@ export default {
   },
   methods: {
     refresh() {
-      DataService.getAll(this.serverUrl).then(response => {
+      DataService.getAll(this.serverUrl + "?expand").then(response => {
         this.orders = response.data;
       })
     },
