@@ -26,7 +26,9 @@
               <li v-for="meal in order.items">{{ meal }}</li>
             </ul>
           </div>
-          <div class="btn btn-outline-dark" v-on:click="update(order.id)">Edit</div>
+          <div class="btn btn-outline-dark mr-2" v-on:click="update(order.id)">Edit</div>
+          <div class="btn btn-outline-danger mr-2" v-on:click="deleteItem(order.id)">Delete
+          </div>
         </div>
       </div>
       <div v-for="order in orders" v-if="order.ready" class="card text-white bg-dark mb-3">
@@ -42,6 +44,8 @@
             </ul>
           </div>
           <div class="btn btn-outline-light mr-2" v-on:click="update(order.id)">Edit</div>
+          <div class="btn btn-outline-danger mr-2" v-on:click="deleteItem(order.id)">Delete
+          </div>
         </div>
       </div>
     </div>
@@ -65,19 +69,6 @@ export default {
     refresh() {
       DataService.getAll(this.serverUrl).then(response => {
         this.orders = response.data;
-        // this.orders = [{
-        //   id: 2,
-        //   waiterID: 'Sabina',
-        //   table: 2,
-        //   items: ["adfasdf", "adfasd", "asdfsd"],
-        //   ready: true
-        // }, {
-        //   id: 3,
-        //   waiterID: 'Siroj',
-        //   table: 5,
-        //   items: ["adfasdf", "adfasd", "asdfsd"],
-        //   ready: false
-        // }]
       })
     },
     deleteItem(id) {
@@ -85,9 +76,9 @@ export default {
         this.message = 'Deleted ' + response.data.mealName + ' successful';
         this.last = {
           id: response.data.id,
-          mealAvailable: response.data.mealAvailable,
-          mealCost: response.data.mealCost,
-          mealName: response.data.mealName
+          waiterID: response.data.waiterID,
+          tableID: response.data.tableID,
+          ready: response.data.ready,
         };
         this.refresh();
       })
@@ -100,8 +91,8 @@ export default {
     },
     async undo() {
       await DataService.create(this.serverUrl, this.last);
-      this.refresh();
       this.message = null;
+      this.refresh();
     },
     deleteMessage() {
       this.message = null;
