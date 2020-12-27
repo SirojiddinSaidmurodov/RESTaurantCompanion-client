@@ -1,7 +1,7 @@
 <template>
 
   <div class="row">
-    <div class="col-3">
+    <div class="col-2">
       <div id="v-pills-tab" aria-orientation="vertical" class="nav flex-column nav-pills" role="tablist">
         <div aria-controls="v-pills-home" aria-selected="true" class="nav-link active"
              data-toggle="pill" role="tab"
@@ -23,7 +23,7 @@
         </div>
       </div>
     </div>
-    <div class="col-9">
+    <div class="col-10">
 
       <div class="container">
         <router-view/>
