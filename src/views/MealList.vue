@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h2>Menu</h2>
+    <h2 class="display-3">Menu</h2>
 
     <div v-if="message" id="deleteMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
       <h4>Warning!</h4>
@@ -8,7 +8,7 @@
       <button class="btn btn-outline-danger" data-dismiss="alert" type="button" v-on:click="undo()">Cancel
       </button>
 
-      <button aria-label="Close" class="close" data-dismiss="alert" type="button" v-on:click="this.message = null">
+      <button aria-label="Close" class="close" data-dismiss="alert" type="button" v-on:click="deleteMessage()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
@@ -29,16 +29,16 @@
         <td>{{ meal.mealCost }}</td>
         <td>{{ meal.mealAvailable }}</td>
         <td>
-          <button class="btn btn-primary" v-on:click="updateMeal(meal.id)">Edit</button>
+          <button class="btn btn-primary" v-on:click="update(meal.id)">Edit</button>
         </td>
         <td>
-          <button class="btn btn-danger" v-on:click="deleteMeal(meal.id)">Delete</button>
+          <button class="btn btn-danger" v-on:click="deleteItem(meal.id)">Delete</button>
         </td>
       </tr>
       </tbody>
     </table>
     <div class="row">
-      <button class="btn btn-success" v-on:click="addMeal()">Add</button>
+      <button class="btn btn-success" v-on:click="add()">Add</button>
     </div>
   </div>
 </template>
@@ -57,12 +57,12 @@ export default {
     }
   },
   methods: {
-    refreshMeals() {
+    refresh() {
       DataService.getAll(this.serverUrl).then(response => {
         this.meals = response.data;
       })
     },
-    deleteMeal(id) {
+    deleteItem(id) {
       DataService.delete(this.serverUrl, id).then(response => {
         this.message = 'Deleted ' + response.data.mealName + ' successful';
         this.last = {
@@ -71,23 +71,26 @@ export default {
           mealCost: response.data.mealCost,
           mealName: response.data.mealName
         };
-        this.refreshMeals();
+        this.refresh();
       })
     },
-    updateMeal(id) {
+    update(id) {
       this.$router.push('/meals/' + id)
     },
-    addMeal() {
+    add() {
       this.$router.push(`/meals/0`)
     },
     async undo() {
       await DataService.create(this.serverUrl, this.last);
-      this.refreshMeals();
+      this.refresh();
+      this.message = null;
+    },
+    deleteMessage() {
       this.message = null;
     }
   },
   created() {
-    this.refreshMeals();
+    this.refresh();
   }
 }
 </script>

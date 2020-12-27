@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1>Meal details</h1>
+    <h1 class="display-3">Meal details</h1>
     <form @submit="handleSubmit">
       <div class="form-row">
         <label for="id">ID</label>
