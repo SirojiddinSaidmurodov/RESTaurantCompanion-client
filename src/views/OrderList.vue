@@ -18,7 +18,7 @@
         <div class="card-header">{{ order.id % 100 }}</div>
         <div class="card-body">
           <h4 class="card-title">
-            {{ order.waiterID }}
+            {{ getUserName(order.waiterID) }}
           </h4>
           <h6 class="card-subtitle">Table {{ order.tableID }}</h6>
           <div class="card-text">
@@ -37,7 +37,7 @@
         <div class="card-header">{{ order.id % 100 }}</div>
         <div class="card-body">
           <h4 class="card-title">
-            {{ order.waiterID }}
+            {{ getUserName(order.waiterID) }}
           </h4>
           <h6 class="card-subtitle">Table {{ order.tableID }}</h6>
           <div class="card-text">
@@ -66,6 +66,7 @@ export default {
     return {
       orders: [],
       message: null,
+      users: [],
       last: null,
       serverUrl: "http://localhost:8080/order/"
     }
@@ -74,6 +75,9 @@ export default {
     refresh() {
       DataService.getAll(this.serverUrl + "?expand").then(response => {
         this.orders = response.data;
+      })
+      DataService.getAll("http://localhost:8080/user").then(response => {
+        this.users = response.data;
       })
     },
     deleteItem(id) {
@@ -101,6 +105,11 @@ export default {
     },
     deleteMessage() {
       this.message = null;
+    },
+    getUserName: function (id) {
+      return this.users.find(function (el) {
+        return el.id === id;
+      }).name;
     }
   },
   created() {
