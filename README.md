@@ -1,11 +1,15 @@
-# restaurant-client
+# RESTaurant Companion (client)
+
+Client for [RESTaurant Companion](https://github.com/SirojiddinSaidmurodov/RESTaurantCompanion-server)
 
 ## Project setup
+
 ```
 npm install
 ```
 
 ### Compiles and hot-reloads for development
+
 ```
 npm run serve
 ```
@@ -14,6 +18,3 @@ npm run serve
 ```
 npm run build
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
